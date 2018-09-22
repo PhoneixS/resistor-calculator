@@ -1,20 +1,83 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div style="text-align:center">
   <h1>
-    Welcome to {{ title }}!
+    Resistor calculator
   </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
 </div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
 
+<mat-card>
+
+  <form [formGroup]="dataForm" (ngSubmit)="calcular()">
+
+    <div formArrayName="availableResistors">
+      <h3>Resistors available</h3> <button type="button" (click)="addResistor()">Add resistor</button>
+      <div>
+        <label class="quarter-width" for="value{{i}}">Resistor:</label>
+        <label class="quarter-width" for="quantity{{i}}">Quantity:</label>
+      </div>
+
+      <div *ngFor="let resistencia of dataForm.controls.availableResistors.controls; let i=index">
+        <!-- The repeated alias template -->
+        <div [formGroupName]="i">
+          <div>
+            <mat-form-field class="quarter-width">
+              <input matInput placeholder="Value R{{i}}" type="number" id="value{{i}}" formControlName="value">
+            </mat-form-field>
+            <mat-form-field class="quarter-width">
+              <input matInput placeholder="Quantity R{{i}}" type="number" id="quantity{{i}}" formControlName="quantity">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div>
+      <mat-form-field class="medium-width">
+        <input matInput type="number" placeholder="Desired value" id="requiredValue" formControlName="requiredValue">
+      </mat-form-field>
+    </div>
+
+
+    <mat-card-actions>
+      <button mat-button type="submit" [disabled]="!dataForm.valid">Calcular</button>
+    </mat-card-actions>
+
+  </form>
+
+</mat-card>
+
+<mat-card *ngIf="progress !== null">
+
+  <mat-card-content>
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </mat-card-content>
+
+</mat-card>
+
+<mat-card *ngIf="notFound !== null">
+
+  <div *ngIf="notFound">
+    <mat-card-header>
+      <mat-card-title>No result found.</mat-card-title>
+    </mat-card-header>
+  </div>
+  <div *ngIf="!notFound">
+
+    <mat-card-header>
+      <mat-card-title>Result found!</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+
+      <div *ngFor="let entry of result">
+
+        <p>{{entry[0]}}: {{entry[1]}}</p>
+
+      </div>
+
+    </mat-card-content>
+
+  </div>
+
+</mat-card>

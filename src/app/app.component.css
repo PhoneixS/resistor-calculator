@@ -1,0 +1,14 @@
+
+.full-width {
+    width: 100%;
+}
+
+.medium-width {
+    width: 50%;
+}
+
+.quarter-width {
+    display: inline-block;
+    width: 25%;
+    margin: 0em 1em;
+}

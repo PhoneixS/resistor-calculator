@@ -12,11 +12,11 @@
     <div formArrayName="availableResistors">
       <h3>Resistors available</h3> <button type="button" (click)="addResistor()">Add resistor</button>
       <div>
-        <label class="quarter-width" for="value{{i}}">Resistor:</label>
-        <label class="quarter-width" for="quantity{{i}}">Quantity:</label>
+        <label class="quarter-width" for="value">Resistor:</label>
+        <label class="quarter-width" for="quantity">Quantity:</label>
       </div>
 
-      <div *ngFor="let resistencia of dataForm.controls.availableResistors.controls; let i=index">
+      <div *ngFor="let resistencia of resistencias.controls; let i=index">
         <!-- The repeated alias template -->
         <div [formGroupName]="i">
           <div>

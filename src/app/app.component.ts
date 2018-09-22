@@ -47,7 +47,7 @@ export class AppComponent {
     this.progress = 0;
 
     const resistors = new Map();
-    
+
     this.resistencias.controls.forEach(control => {
 
       const val = control.get('value').value;
@@ -75,7 +75,6 @@ export class AppComponent {
         this.notFound = false;
         this.result = Array.from(r.entries());
       }
-      
 
     });
 

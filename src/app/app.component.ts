@@ -24,7 +24,7 @@ export class AppComponent {
       availableResistors: this.fb.array([
         this.fb.group({
           value: [220, Validators.min(0)],
-          quantity: [1, Validators.min(0)]
+          quantity: [10, Validators.min(0)]
         })
       ]),
       requiredValue: [0, [Validators.required, Validators.min(0)]],
@@ -39,7 +39,7 @@ export class AppComponent {
   addResistor() {
     this.resistencias.push(this.fb.group({
       value: this.fb.control(1000),
-      quantity: this.fb.control(1)
+      quantity: this.fb.control(10)
     }));
   }
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -9,13 +9,14 @@ import { CalculatorService } from './services/calculator.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
   title = 'resistor-calculator';
   progress = null;
   result = null;
   total = null;
   notFound = null;
+  combinations = 10;
 
   public dataForm: FormGroup;
 
@@ -30,6 +31,16 @@ export class AppComponent {
       requiredValue: [0, [Validators.required, Validators.min(0)]],
       findBest: ['1']
     });
+  }
+
+  ngOnInit() {
+
+    this.resistencias.valueChanges.subscribe((val: {quantity: number}[]) => {
+
+      this.combinations = Array.from(val).map(obj => obj.quantity).reduce((previous, current) => previous * current);
+
+    });
+
   }
 
   get resistencias(): FormArray {

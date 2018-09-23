@@ -14,6 +14,7 @@ export class AppComponent {
   title = 'resistor-calculator';
   progress = null;
   result = null;
+  total = null;
   notFound = null;
 
   public dataForm: FormGroup;
@@ -26,7 +27,8 @@ export class AppComponent {
           quantity: [1, Validators.min(0)]
         })
       ]),
-      requiredValue: [0, [Validators.required, Validators.min(0)]]
+      requiredValue: [0, [Validators.required, Validators.min(0)]],
+      findBest: ['1']
     });
   }
 
@@ -45,6 +47,8 @@ export class AppComponent {
 
     console.log('Starting...');
     this.progress = 0;
+    this.result = null;
+    this.total = null;
 
     const resistors = new Map();
 
@@ -63,7 +67,9 @@ export class AppComponent {
 
     const desiredValue = this.dataForm.get('requiredValue').value;
 
-    this.calculator.start(resistors, desiredValue).subscribe(r => {
+    this.calculator.start(resistors, desiredValue, {
+      findBest: this.dataForm.get('findBest').value === '1'
+    }).subscribe(r => {
 
       console.log('Finished');
       this.progress = null;
@@ -71,9 +77,11 @@ export class AppComponent {
       if (r == null) {
         this.notFound = true;
         this.result = null;
+        this.total = null;
       } else {
         this.notFound = false;
-        this.result = Array.from(r.entries());
+        this.result = Array.from(r.quantities.entries());
+        this.total = r.totalQuantities;
       }
 
     });

@@ -12,3 +12,7 @@
     width: 25%;
     margin: 0em 1em;
 }
+
+mat-grid-tile {
+    background: lightgrey;
+}

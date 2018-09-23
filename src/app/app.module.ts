@@ -4,8 +4,9 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialSharedModule } from './material-shared/material-shared.module';
 
-import { MatInputModule, MatFormFieldModule, MatProgressBarModule, MatCardModule } from '@angular/material';
+
 
 @NgModule({
   declarations: [
@@ -15,10 +16,7 @@ import { MatInputModule, MatFormFieldModule, MatProgressBarModule, MatCardModule
     BrowserModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatProgressBarModule,
-    MatCardModule
+    MaterialSharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -83,17 +83,26 @@ export class AppComponent implements OnInit {
       findBest: this.dataForm.get('findBest').value === '1'
     }).subscribe(r => {
 
-      console.log('Finished');
-      this.progress = null;
+      if (r.isFinished) {
 
-      if (r == null) {
-        this.notFound = true;
-        this.result = null;
-        this.total = null;
+        console.log('Finished: ', r);
+        this.progress = null;
+        const data = r.result;
+
+        if (data == null) {
+          this.notFound = true;
+          this.result = null;
+          this.total = null;
+        } else {
+          this.notFound = false;
+          this.result = Array.from(data.quantities.entries());
+          this.total = data.totalQuantities;
+        }
+
       } else {
-        this.notFound = false;
-        this.result = Array.from(r.quantities.entries());
-        this.total = r.totalQuantities;
+
+        this.progress = r.status;
+
       }
 
     });

@@ -61,7 +61,7 @@
 
     <mat-grid-tile *ngIf="progress !== null">
 
-      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      <mat-progress-bar mode="determinate" [value]="progress"></mat-progress-bar>
 
 
     </mat-grid-tile>

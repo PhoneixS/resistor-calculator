@@ -2,7 +2,7 @@ import { QuantitiesResult } from './../quantities-result';
 
 import { Injectable } from '@angular/core';
 
-import { of, Observable, Subject } from 'rxjs';
+import { of, Observable, Subject, empty } from 'rxjs';
 import { createWorker, ITypedWorker } from 'typed-web-workers';
 
 import { IQuantities } from './../iquantities';
@@ -13,7 +13,7 @@ interface WorkerParameter {
   targetValue: number;
 }
 
-interface WorkerResult {
+export interface WorkerResult {
   isFinished: boolean;
   result?: QuantitiesResult;
   status?: number;
@@ -24,13 +24,13 @@ interface WorkerResult {
 })
 export class CalculatorService {
 
-  private results: Subject<QuantitiesResult>;
+  private results: Subject<WorkerResult>;
 
   constructor() { }
 
   start(resistors: Map<number, number>, targetValue: number, options = {
     findBest: true
-  }): Observable<QuantitiesResult> {
+  }): Observable<WorkerResult> {
 
     if (options.findBest) {
 
@@ -44,7 +44,7 @@ export class CalculatorService {
 
   }
 
-  private findFirst(resistors: Map<number, number>, targetValue: number): Observable<QuantitiesResult> {
+  private findFirst(resistors: Map<number, number>, targetValue: number): Observable<WorkerResult> {
 
     // Start with all elements at 0.
     const currentQuantities = new Quantities(resistors);
@@ -61,12 +61,15 @@ export class CalculatorService {
 
     }
 
-    // Return the best result
-    return of(currentQuantities);
+    // Return the result
+    return of({
+      isFinished: true,
+      result: currentQuantities
+    });
 
   }
 
-  private findBest(resistors: Map<number, number>, targetValue: number): Observable<QuantitiesResult> {
+  private findBest(resistors: Map<number, number>, targetValue: number): Observable<WorkerResult> {
 
     // TODO Finish all previous calls
 
@@ -74,7 +77,7 @@ export class CalculatorService {
     this.results = new Subject();
 
     // Create the new worker.
-    const typedWorker: ITypedWorker<WorkerParameter, IQuantities> = createWorker(this.doSearch, (result) => this.doResult(result));
+    const typedWorker: ITypedWorker<WorkerParameter, WorkerResult> = createWorker(this.doSearch, (result) => this.doResult(result));
 
     // Start the calculus.
     typedWorker.postMessage({
@@ -87,14 +90,13 @@ export class CalculatorService {
 
   }
 
-  private doResult(result: QuantitiesResult) {
+  private doResult(result: WorkerResult) {
 
-    console.log('Resultado: ', result);
     this.results.next(result);
 
   }
 
-  private doSearch(parameters: WorkerParameter, callback: (_: QuantitiesResult) => void) {
+  private doSearch(parameters: WorkerParameter, callback: (_: WorkerResult) => void) {
 
     console.log('Loading utilities');
 
@@ -207,15 +209,22 @@ export class CalculatorService {
 
     // a little optimization if the want 0
     if (parameters.targetValue === 0) {
-      return callback({
-        totalQuantities: currentQuantities.totalQuantities,
-        totalValue: currentQuantities.totalValue,
-        quantities: currentQuantities.quantities
-      });
+      const emptyResult: WorkerResult = {
+        isFinished: true,
+        result: {
+          totalQuantities: currentQuantities.totalQuantities,
+          totalValue: currentQuantities.totalValue,
+          quantities: currentQuantities.quantities
+        }
+      };
+      callback(emptyResult);
+      return;
     }
 
     // and the best is to use all the resistors
     let bestQuantity = currentQuantities.maximized();
+
+    const total = Array.from(parameters.resistors.values()).map(q => q + 1).reduce((previous, current) => previous * current);
 
     let exactResult = false;
 
@@ -225,14 +234,21 @@ export class CalculatorService {
 
       counter++;
       if ((counter % 100000) === 0) {
-        console.log('Increased ' + counter);
+
+        // Announce the progress
+        const progressResult: WorkerResult = {
+          isFinished: false,
+          status: (100 * counter / total)
+        };
+        callback(progressResult);
+
       }
 
       // If it is what we want and is better than previous results, save it.
       if (currentQuantities.totalValue === parameters.targetValue && currentQuantities.totalQuantities < bestQuantity.totalQuantities) {
         bestQuantity = currentQuantities.snapshot();
         exactResult = true;
-        console.log('Exact match found');
+        console.log('Exact match found: ', bestQuantity);
       }
 
     }
@@ -240,15 +256,24 @@ export class CalculatorService {
     console.log('finished calculation after ' + counter + ' iterations');
 
     if (!exactResult) {
-      callback(null);
+      callback({
+        isFinished: true,
+        result: null
+      });
+      return;
     }
 
     // Return the best result
-    callback({
-      totalQuantities: bestQuantity.totalQuantities,
-      totalValue: bestQuantity.totalValue,
-      quantities: bestQuantity.quantities
-    });
+    const endResult: WorkerResult = {
+      isFinished: true,
+      result: {
+        totalQuantities: bestQuantity.totalQuantities,
+        totalValue: bestQuantity.totalValue,
+        quantities: bestQuantity.quantities
+      }
+    };
+    console.dir(endResult);
+    callback(endResult);
 
   }
 

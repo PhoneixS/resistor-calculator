@@ -1,4 +1,6 @@
-export class Quantities {
+import { IQuantities } from './iquantities';
+
+export class Quantities implements IQuantities {
 
     private _quantities: Map<number, number>;
     private _maximum: Map<number, number>;

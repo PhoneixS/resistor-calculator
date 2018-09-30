@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
   result = null;
   total = null;
   notFound = null;
-  combinations = 10;
+  combinations = 11;
 
   public dataForm: FormGroup;
 
@@ -37,7 +37,8 @@ export class AppComponent implements OnInit {
 
     this.resistencias.valueChanges.subscribe((val: {quantity: number}[]) => {
 
-      this.combinations = Array.from(val).map(obj => obj.quantity).reduce((previous, current) => previous * current);
+      // Add 1 because you also count the 0.
+      this.combinations = Array.from(val).map(obj => obj.quantity).map(q => q + 1).reduce((previous, current) => previous * current);
 
     });
 

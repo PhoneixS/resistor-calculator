@@ -1,72 +1,64 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<mat-grid-list cols="2">
+<div fxLayout="column">
 
-  <mat-grid-tile-header>
-    <div style="text-align:center">
-      <h1>
-        Resistor calculator
-      </h1>
-    </div>
+    <h1>
+      Resistor calculator
+    </h1>
 
-  </mat-grid-tile-header>
+  <form [formGroup]="dataForm" (ngSubmit)="calcular()">
 
-  <mat-grid-tile>
+    <div formArrayName="availableResistors">
 
+      <mat-grid-tile-header>
+        <h3>Resistors available</h3>
+      </mat-grid-tile-header>
 
-    <form [formGroup]="dataForm" (ngSubmit)="calcular()">
+      <button type="button" (click)="addResistor()">Add resistor</button>
+      <div>
+        <label class="medium-width" for="value">Resistor:</label>
+        <label class="medium-width" for="quantity">Quantity:</label>
+      </div>
 
-      <div formArrayName="availableResistors">
-
-        <mat-grid-tile-header>
-          <h3>Resistors available</h3>
-        </mat-grid-tile-header>
-
-        <button type="button" (click)="addResistor()">Add resistor</button>
-        <div>
-          <label class="medium-width" for="value">Resistor:</label>
-          <label class="medium-width" for="quantity">Quantity:</label>
-        </div>
-
-        <div *ngFor="let resistencia of resistencias.controls; let i=index">
-          <!-- The repeated alias template -->
-          <div [formGroupName]="i">
-            <div>
-              <mat-form-field class="medium-width">
-                <input matInput placeholder="Value R{{i}}" type="number" id="value{{i}}" formControlName="value">
-              </mat-form-field>
-              <mat-form-field class="medium-width">
-                <input matInput placeholder="Quantity R{{i}}" type="number" id="quantity{{i}}" formControlName="quantity">
-              </mat-form-field>
-            </div>
+      <div *ngFor="let resistencia of resistencias.controls; let i=index">
+        <!-- The repeated alias template -->
+        <div [formGroupName]="i">
+          <div>
+            <mat-form-field class="medium-width">
+              <input matInput placeholder="Value R{{i}}" type="number" id="value{{i}}" formControlName="value">
+            </mat-form-field>
+            <mat-form-field class="medium-width">
+              <input matInput placeholder="Quantity R{{i}}" type="number" id="quantity{{i}}" formControlName="quantity">
+            </mat-form-field>
           </div>
         </div>
-
       </div>
 
-      <div>
-        <mat-form-field class="medium-width">
-          <input matInput type="number" placeholder="Desired value" id="requiredValue" formControlName="requiredValue">
-        </mat-form-field>
-      </div>
+    </div>
 
-      <div>
-        <mat-radio-group formControlName="findBest">
-            <mat-radio-button value="1">Find best combination</mat-radio-button>
-            <mat-radio-button value="0">Find first combination</mat-radio-button>
-        </mat-radio-group>
-      </div>
+    <div>
+      <mat-form-field class="medium-width">
+        <input matInput type="number" placeholder="Desired value" id="requiredValue" formControlName="requiredValue">
+      </mat-form-field>
+    </div>
 
-
-      <mat-grid-tile-footer>
-        <button mat-button type="submit" [disabled]="!dataForm.valid">Calcular</button>
-        Number of combinations {{combinations | number}}
-      </mat-grid-tile-footer>
+    <div>
+      <mat-radio-group formControlName="findBest">
+          <mat-radio-button value="1">Find best combination</mat-radio-button>
+          <mat-radio-button value="0">Find first combination</mat-radio-button>
+      </mat-radio-group>
+    </div>
 
 
-    </form>
+    <mat-grid-tile-footer>
+      <button mat-button type="submit" [disabled]="!dataForm.valid">Calcular</button>
+      Number of combinations {{combinations | number}}
+    </mat-grid-tile-footer>
 
 
-  </mat-grid-tile>
+  </form>
+
+
+<mat-grid-list cols="2">
+
   <mat-grid-tile *ngIf="progress !== null">
 
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
@@ -99,3 +91,5 @@
 
   </mat-grid-tile>
 </mat-grid-list>
+
+</div>

@@ -1,8 +1,8 @@
 <div fxLayout="column">
 
-    <h1>
-      Resistor calculator
-    </h1>
+  <h1>
+    Resistor calculator
+  </h1>
 
   <form [formGroup]="dataForm" (ngSubmit)="calcular()">
 
@@ -42,8 +42,8 @@
 
     <div>
       <mat-radio-group formControlName="findBest">
-          <mat-radio-button value="1">Find best combination</mat-radio-button>
-          <mat-radio-button value="0">Find first combination</mat-radio-button>
+        <mat-radio-button value="1">Find best combination</mat-radio-button>
+        <mat-radio-button value="0">Find first combination</mat-radio-button>
       </mat-radio-group>
     </div>
 
@@ -57,39 +57,39 @@
   </form>
 
 
-<mat-grid-list cols="2">
+  <mat-grid-list cols="2">
 
-  <mat-grid-tile *ngIf="progress !== null">
+    <mat-grid-tile *ngIf="progress !== null">
 
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-
-
-  </mat-grid-tile>
-  <mat-grid-tile *ngIf="notFound !== null">
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 
 
-    <div *ngIf="notFound">
-      <mat-grid-tile-header>
-        No result found.
-      </mat-grid-tile-header>
-    </div>
-    <div *ngIf="!notFound">
+    </mat-grid-tile>
+    <mat-grid-tile *ngIf="notFound !== null">
 
-      <mat-grid-tile-header>Result found!</mat-grid-tile-header>
 
-      <div *ngFor="let entry of result">
+      <div *ngIf="notFound">
+        <mat-grid-tile-header>
+          No result found.
+        </mat-grid-tile-header>
+      </div>
+      <div *ngIf="!notFound">
 
-        <p>{{entry[0]}}: {{entry[1]}}</p>
+        <mat-grid-tile-header>Result found!</mat-grid-tile-header>
+
+        <div *ngFor="let entry of result">
+
+          <p>{{entry[0]}}: {{entry[1]}}</p>
+
+        </div>
+
+        <mat-grid-tile-footer>
+          <p>Total {{total}}</p>
+        </mat-grid-tile-footer>
 
       </div>
 
-      <mat-grid-tile-footer>
-        <p>Total {{total}}</p>
-      </mat-grid-tile-footer>
-
-    </div>
-
-  </mat-grid-tile>
-</mat-grid-list>
+    </mat-grid-tile>
+  </mat-grid-list>
 
 </div>

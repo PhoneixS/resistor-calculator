@@ -35,7 +35,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
 
-    this.resistencias.valueChanges.subscribe((val: {quantity: number}[]) => {
+    this.resistencias.valueChanges.subscribe((val: { quantity: number }[]) => {
 
       // Add 1 because you also count the 0.
       this.combinations = Array.from(val).map(obj => obj.quantity).map(q => q + 1).reduce((previous, current) => previous * current);

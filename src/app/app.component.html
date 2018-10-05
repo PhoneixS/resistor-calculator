@@ -57,39 +57,35 @@
   </form>
 
 
-  <mat-grid-list cols="2">
+  <div *ngIf="progress !== null">
 
-    <mat-grid-tile *ngIf="progress !== null">
+    <mat-progress-bar mode="determinate" [value]="progress"></mat-progress-bar>
 
-      <mat-progress-bar mode="determinate" [value]="progress"></mat-progress-bar>
+  </div>
+  <div *ngIf="progress === null && notFound !== null">
 
+    <mat-card *ngIf="notFound">
+      No result found.
+    </mat-card>
 
-    </mat-grid-tile>
-    <mat-grid-tile *ngIf="notFound !== null">
+    <mat-card *ngIf="!notFound">
 
+      <mat-card-title>
+        Result found!
+      </mat-card-title>
 
-      <div *ngIf="notFound">
-        <mat-grid-tile-header>
-          No result found.
-        </mat-grid-tile-header>
-      </div>
-      <div *ngIf="!notFound">
+      <div *ngFor="let entry of result">
 
-        <mat-grid-tile-header>Result found!</mat-grid-tile-header>
-
-        <div *ngFor="let entry of result">
-
-          <p>{{entry[0]}}: {{entry[1]}}</p>
-
-        </div>
-
-        <mat-grid-tile-footer>
-          <p>Total {{total}}</p>
-        </mat-grid-tile-footer>
+        <p>{{entry[0]}}: {{entry[1]}}</p>
 
       </div>
 
-    </mat-grid-tile>
-  </mat-grid-list>
+      <mat-card-footer>
+        Total {{total}}
+      </mat-card-footer>
+
+    </mat-card>
+
+  </div>
 
 </div>

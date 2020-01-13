@@ -27,7 +27,7 @@
     "rxjs": "~6.5.4",
     "service": "^0.1.4",
     "tslib": "^1.10.0",
-    "typed-web-workers": "^2.1.1",
+    "typed-web-workers": "^3.0.0-beta.0",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {

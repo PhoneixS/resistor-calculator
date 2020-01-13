@@ -22,6 +22,10 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 To build it for github you should do with `ng build --prod --base-href /resistor-calculator/`
 
+## Publish on GitHub Pages
+
+You can use `ng deploy --base-href "/resistor-calculator/"` to build and publish a new version to the GitHub Pages.
+
 ## Running unit tests
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).

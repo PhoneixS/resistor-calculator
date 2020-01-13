@@ -1,6 +1,12 @@
 # ResistorCalculator
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.2.3.
+This proyect aim to help you when you have a bounch of resistors but you need a specific resistor value that you don't have so you need to connect them in serial them to make its value but at the same time you want to only use the minimum number of resistors necesary.
+
+For now, this calculator only take into account resistors connected in serial (sum of their values) but in a (far) future it would also have into account parallel resistors.
+
+## How to use it ##
+
+You can clone this proyect and run it locally as in the next section or simply go to https://phoneixs.github.io/resistor-calculator/ and use it.
 
 ## Development server
 
